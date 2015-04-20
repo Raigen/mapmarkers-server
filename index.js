@@ -1,15 +1,12 @@
-/*eshint-env node*/
+/*eslint-env node*/
 var express = require('express');
 var Bluebird = require('bluebird');
 var mongodb = Bluebird.promisifyAll(require('mongodb'));
+
 var MongoClient = Bluebird.promisifyAll(mongodb.MongoClient);
 
-var MongoClient = mongodb.MongoClient;
-var Collection = mongodb.Collection;
-
-
 var app = express();
-var mongoClient =  MongoClient.connectAsync('mongodb://localhost:27017/mapmarkers');
+var mongoClient = MongoClient.connectAsync('mongodb://localhost:27017/mapmarkers');
 
 app.get('/markers', function (req, res) {
     'use strict';
@@ -24,6 +21,7 @@ app.get('/markers', function (req, res) {
     });
 });
 app.get('/markers/:id', function (req, res) {
+    'use strict';
     var id = new mongodb.ObjectID(req.params.id);
     mongoClient.then(function (db) {
         return db.collection('markers').findOneAsync({_id: id});
