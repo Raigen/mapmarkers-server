@@ -1,40 +1,39 @@
 /*eshint-env node*/
 var express = require('express');
+var Bluebird = require('bluebird');
+var mongodb = Bluebird.promisifyAll(require('mongodb'));
+var MongoClient = Bluebird.promisifyAll(mongodb.MongoClient);
+
+var MongoClient = mongodb.MongoClient;
+var Collection = mongodb.Collection;
+
 
 var app = express();
-var markers = {
-    '1': {
-        id: '1',
-        name: 'Zuhause',
-        lat: '',
-        lng: '',
-        address: 'Fraenkelstr. 6, 22307 Hamburg',
-        fav: true
-    },
-    '2': {
-        id: '2',
-        name: 'Ines Zuhause',
-        lat: '',
-        lng: '',
-        address: 'An der Berner Au 71a, 23043 Hamburg',
-        fav: true
-    },
-    '3': {
-        id: '3',
-        name: 'Arbiet',
-        lat: '',
-        lng: '',
-        address: 'Pilatuspool 2, 23424 Hamburg',
-        fav: false
-    }
-};
+var mongoClient =  MongoClient.connectAsync('mongodb://localhost:27017/mapmarkers');
 
 app.get('/markers', function (req, res) {
     'use strict';
-    return res.end(JSON.stringify( markers ));
+    mongoClient.then(function (db) {
+        return db.collection('markers').find({}).toArrayAsync();
+    }).then(function (items) {
+        res.write(JSON.stringify(items));
+    }).catch(function (error) {
+        console.log(error);
+    }).finally(function () {
+        res.end();
+    });
 });
 app.get('/markers/:id', function (req, res) {
-    return res.end(JSON.stringify(markers[req.params.id]));
-})
+    var id = new mongodb.ObjectID(req.params.id);
+    mongoClient.then(function (db) {
+        return db.collection('markers').findOneAsync({_id: id});
+    }).then(function (item) {
+        res.write(JSON.stringify(item));
+    }).catch(function (error) {
+        console.log(error);
+    }).finally(function () {
+        res.end();
+    });
+});
 
 app.listen(8080);

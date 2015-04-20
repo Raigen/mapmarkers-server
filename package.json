@@ -1,7 +1,9 @@
 {
-    "name": "markers-server",
-    "description": "nodejs server for own map-markers sync service",
-    "dependencies": {
-        "express": "^4.12.3"
-    }
+  "name": "markers-server",
+  "description": "nodejs server for own map-markers sync service",
+  "dependencies": {
+    "bluebird": "^2.9.24",
+    "express": "^4.12.3",
+    "mongodb": "^2.0.27"
+  }
 }
