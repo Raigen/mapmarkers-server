@@ -1,0 +1,7 @@
+{
+    "name": "markers-server",
+    "description": "nodejs server for own map-markers sync service",
+    "dependencies": {
+        "express": "^4.12.3"
+    }
+}
