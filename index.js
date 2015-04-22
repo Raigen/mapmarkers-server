@@ -17,7 +17,8 @@ app.get('/markers', function (req, res) {
     collectionPromise.then(function (collection) {
         return collection.find({}).toArrayAsync();
     }).then(function (items) {
-        res.write(JSON.stringify(items));
+        var result = {markers: items};
+        res.write(JSON.stringify(result));
     }).catch(function (error) {
         console.log(error);
     }).finally(function () {
