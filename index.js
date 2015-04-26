@@ -12,6 +12,12 @@ var collectionPromise = mongoClient.then(function (db) {
     return db.collection('markers');
 });
 
+app.get('/', function (req, res) {
+    'use strict';
+    res.write('It works!');
+    res.end();
+});
+
 app.get('/markers', function (req, res) {
     'use strict';
     collectionPromise.then(function (collection) {
@@ -72,4 +78,4 @@ app.put('/markers/:id', function (req, res) {
     });
 });
 
-app.listen(8080);
+app.listen(process.env.PORT);
