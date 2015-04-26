@@ -6,7 +6,7 @@ var mongodb = Bluebird.promisifyAll(require('mongodb'));
 var MongoClient = Bluebird.promisifyAll(mongodb.MongoClient);
 
 var app = express();
-var mongoClient = MongoClient.connectAsync('mongodb://localhost:27017/mapmarkers');
+var mongoClient = MongoClient.connectAsync(process.env.MONGOLAB_URI);
 var collectionPromise = mongoClient.then(function (db) {
     'use strict';
     return db.collection('markers');
